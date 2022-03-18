@@ -9,7 +9,6 @@ interface AccountProps {
 const Account: FC<AccountProps> = function ({ tokens, ethAddress }) {
         const [balance, setBalance] = useState<number>(0);
     useEffect(() => {
-        console.log(ethAddress);
         if(ethAddress) {
             PerlContract.methods.balanceOf(ethAddress).call()
                 .then((balance: number) => setBalance(balance))

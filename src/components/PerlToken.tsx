@@ -1,5 +1,3 @@
-import { upload } from '@testing-library/user-event/dist/upload';
-import { createReadStream } from 'fs';
 import React, { FC, useEffect, useState } from 'react'
 import { PerlContract } from '../web3';
 import { Gateway, uploadImage } from '../web3/pinata';
@@ -17,6 +15,7 @@ interface Offer {
     sender: string;
     id: number;
     price: number;
+    tokenId: number;
     is_sold: boolean;
 }
 const PerlToken: FC<PerlTokenProps> = function ({ethAddress}) {
@@ -53,7 +52,7 @@ const PerlToken: FC<PerlTokenProps> = function ({ethAddress}) {
         }
     }
     
-    useEffect(() => console.log(tokens), [tokens]);
+    useEffect(() => console.log(offers), [offers]);
     useEffect(() => reloader(), [ethAddress]);
     return (
         <div className='perl-wrapper'>
@@ -98,19 +97,23 @@ const PerlToken: FC<PerlTokenProps> = function ({ethAddress}) {
             </div>
             <div className='title'>Offers</div>
             <div className='perl-table'>
-            {offers && offers.map((offer) => 
+            {offers && offers.map((offer, i) => 
                 !offer.is_sold &&
                 <div 
-                    key={offer.id}
+                    key={i}
                     className='token-item offer-item'
                     onClick={() => 
-                        PerlContract.methods.buy(offer.id).send({
+                        PerlContract.methods.buy(i).send({
                             from: ethAddress,
                             value: offer.price
                         }).then(() => reloader())}
                >
-                    <img src={Gateway(tokens[offer.id].url)}/>
-                    <div>  ID: {offer.id}</div>
+                    <img src={Gateway(tokens[offer.tokenId].url)}/>
+                    <div>
+                        ID: {offer.tokenId}
+                        <br/>
+                        Price: {offer.price / Math.pow(10, 18)} eth
+                    </div>
                 </div>)
                 }
             </div>        

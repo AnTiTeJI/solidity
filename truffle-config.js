@@ -1,5 +1,5 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider')
-const mnemonic = "laugh shallow first dress crouch flower trial slush between thing wear asset"
+const mnemonic = "peanut ritual cook steel view flip escape crazy garment follow envelope river"
 const path = require('path');
 module.exports = {
   contracts_build_directory: path.join(__dirname, "src/contracts"),

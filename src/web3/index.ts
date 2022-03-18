@@ -10,22 +10,21 @@ const serverUrl = "https://xqk6qbfdyqfc.usemoralis.com:2053/server";
 const appId = "uhPe3Dlh6c1t5lnocAGaXwQHxfaREjx74FWdPHVx";
 
 export const AppleContract = new web3.eth.Contract(AppleToken.abi as any, "0x16124D88e7d3F5dbe3Beb61335176afab0963c5b");
-export const PerlContract = new web3.eth.Contract(PerlToken.abi as any, "0x8fce1e0c7d7964bc4055614b2Bf8e6D889B6BD0a");
+export const PerlContract = new web3.eth.Contract(PerlToken.abi as any, "0xb533444Ea304Ab2e09CCFeFc6a4AB7EDE121dFF7");
 
 
 export async function moralisInit() {
     await moralis.start({serverUrl, appId});
-    const moralisUser = moralis.User?.current()?.get("ethAddress");
-    const currentUser = (web3.eth.accounts?.currentProvider as any).selectedAddress;
-    if(moralisUser?.toLowerCase() !== currentUser?.toLowerCase())
-        return false;
-    return true;
+    if(moralis.User.current())
+        return true;
+    return false;
 }
 
 export async function  moralisAuth(setter: (value: boolean) => void) {
     await moralis.authenticate();
-    if(moralis.User.current())
-        setter(true);
+    const moralisUser = moralis.User?.current()?.get("ethAddress");
+    const currentUser = (web3.eth.accounts?.currentProvider as any).selectedAddress;
+    setter(moralisUser?.toLowerCase() === currentUser?.toLowerCase())
 }
 
 export async function  moralisLogout(setter: (value: boolean) => void) {

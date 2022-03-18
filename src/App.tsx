@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { moralis, moralisAuth, moralisInit, moralisLogout, PerlContract, web3 } from './web3';
+import { moralis, moralisAuth, moralisInit, moralisLogout, PerlContract } from './web3';
 import "./App.css"
 import Account from './components/Account';
 import PerlToken from './components/PerlToken';
@@ -16,7 +16,7 @@ function App() {
       PerlContract.methods.tokens().call()
         .then((tokens: string[]) => setTokens(tokens));
     }
-  } , [ethAddress]);
+  } , [auth, ethAddress]);
   
   return (
     <div className="container">

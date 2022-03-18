@@ -13,6 +13,7 @@ contract PerlToken is ERC721 {
         address sender;
         uint256 id;
         uint256 price;
+        uint256 tokenId;
         bool is_sold;
     }
 
@@ -26,15 +27,15 @@ contract PerlToken is ERC721 {
         _tokens.push(Token(url, msg.sender));
     }
 
-    function buy(uint256 tokenId) public payable {
-        require(msg.value >= _offers[tokenId].price);
-        require(msg.sender != _offers[tokenId].sender);
+    function buy(uint256 id) public payable {
+        require(msg.value >= _offers[id].price);
+        require(msg.sender != _offers[id].sender);
 
-        payable(_offers[tokenId].sender).transfer(msg.value);
-        _transfer(_offers[tokenId].sender, msg.sender, tokenId);
+        payable(_offers[id].sender).transfer(msg.value);
+        _transfer(_offers[id].sender, msg.sender, _offers[id].tokenId);
 
-        _tokens[tokenId].owner = msg.sender;
-        _offers[tokenId].is_sold = true;
+        _tokens[_offers[id].tokenId].owner = msg.sender;
+        _offers[id].is_sold = true;
     }
 
     function offer(uint256 tokenId, uint256 price) public {
@@ -42,7 +43,9 @@ contract PerlToken is ERC721 {
         require(balanceOf(msg.sender) > 0);
         require(ownerOf(tokenId) == msg.sender);
 
-        _offers.push(Offer(msg.sender, tokenId, price * 10**18, false));
+        _offers.push(
+            Offer(msg.sender, _offers.length, price * 10**18, tokenId, false)
+        );
     }
 
     function tokenURI(uint256 tokenId)
