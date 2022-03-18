@@ -4,38 +4,38 @@ pragma solidity ^0.8.12;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract AppleToken is ERC20 {
-    mapping(address => uint256) eth_balance;
-    address private sender;
-    uint256 private price = 0.2 ether;
-
-    constructor() ERC20("Apple", "APL") {
-        sender = msg.sender;
-        _mint(sender, 100);
+    struct Offer {
+        uint256 uid;
+        address sender;
+        uint256 price;
+        uint256 amount;
+        bool is_sold;
     }
 
-    function Mint(address account, uint256 amount) public {
-        _mint(account, amount);
+    Offer[] public offers;
+
+    constructor() ERC20("Apple", "APL") {}
+
+    function Mint(uint256 amount) public {
+        _mint(msg.sender, amount);
     }
 
-    function getSender() public view returns (address) {
-        return sender;
+    modifier validateAllowance(uint256 amount) {
+        require(allowance(msg.sender, address(this)) >= amount);
+        _;
     }
 
-    function getPrice() public view returns (uint256) {
-        return price;
-    }
-
-    function getBalance(address account) public view returns (uint256) {
-        return eth_balance[account];
-    }
-
-    function TransferToken(address payable account, uint256 tokens)
+    function sale(uint256 price, uint256 amount)
         public
-        payable
+        validateAllowance(amount)
     {
-        require(account != address(0) && msg.sender != address(0));
-        require(msg.sender.balance >= tokens * price);
-        _transfer(account, msg.sender, tokens);
-        eth_balance[msg.sender] += tokens * price;
+        offers.push(Offer(offers.length, msg.sender, price, amount, false));
+    }
+
+    function buy(uint256 uid) public payable {
+        require(!offers[uid].is_sold);
+        require(msg.value >= offers[uid].price);
+        _transfer(offers[uid].sender, msg.sender, offers[uid].amount);
+        payable(offers[uid].sender).transfer(msg.value);
     }
 }

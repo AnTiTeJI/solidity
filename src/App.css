@@ -38,7 +38,8 @@ hr {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
+    padding: 60px 0;
 }
 .link {
     cursor: pointer;
@@ -60,4 +61,142 @@ hr {
 }
 .btn-manage {
     display: flex;
+}
+.user-table {
+    display: flex;
+    flex-direction: column;
+}
+.token-table {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 540px;
+}
+
+.token-item {
+    width: 240px;
+    height: 160px;
+    margin: 15px;
+    border: 1px solid rgb(0, 50, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    flex-direction: column;
+}
+
+.token-table-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid rgb(0, 50, 0);
+    margin: 10px 0;
+    padding: 10px;
+}
+
+.title {
+    font-size: 24px;
+    margin: 10px;
+}
+
+label {
+    margin: 10px;
+}
+
+.price {
+    min-width: 60px;
+    margin: 12px;
+    display: block;
+}
+
+.token-sell {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.sell {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.token-item {
+    width: 120px;
+    height: 180px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.token-item div {
+    height: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.token-item img {
+    top: 0;
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+}
+
+.offer-item {
+    width: 120px;
+    height: 180px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    cursor: pointer;
+}
+
+.offer-item img {
+    top: 0;
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+}
+
+.offer-item::after {
+    top: -1px;
+    content: "Buy";
+    display: flex;
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 36px;
+    color: rgb(0, 50, 0);
+    transition: all 0.2s linear;
+    background: rgba(255,255,255,0.7);
+    opacity: 0;
+}
+
+.offer-item:hover::after {
+    opacity: 1;
+}
+
+.perl-table {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.perl-mint {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.perl-sell {
+    display: flex;
+    align-items: center;
 }

@@ -1,5 +1,5 @@
-const AppleToken = artifacts.require("AppleToken");
+const PerlToken = artifacts.require("PerlToken");
 
 module.exports = function (deployer) {
-    deployer.deploy(AppleToken);
+    deployer.deploy(PerlToken);
 };

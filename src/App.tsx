@@ -1,10 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import Home from './components/Home';
-import { moralisAuth, moralisInit, moralisLogout } from './web3/moralis';
+import { moralis, moralisAuth, moralisInit, moralisLogout, PerlContract, web3 } from './web3';
 import "./App.css"
+import Account from './components/Account';
+import PerlToken from './components/PerlToken';
 function App() {
-  const [auth, setAuth] = useState(false);
-  useEffect(() => { moralisInit().then(res => setAuth(res)) }, []);
+  const [auth, setAuth] = useState<boolean>(false);
+  const [ethAddress, setEthAddress] = useState<string>("");
+  const [tokens, setTokens] = useState<string[]>([]);
+  useEffect(() => {
+    moralisInit()
+      .then(auth => setAuth(auth));
+    setEthAddress(moralis.User.current()?.get("ethAddress"));
+    if(ethAddress) {
+    console.log(PerlContract);
+      PerlContract.methods.tokens().call()
+        .then((tokens: string[]) => setTokens(tokens));
+    }
+  } , [ethAddress]);
+  
   return (
     <div className="container">
       {    
@@ -13,7 +26,13 @@ function App() {
               onClick={() => moralisAuth(setAuth)}
         >Auth</button>
         : <>
-            <Home />
+            <Account
+              tokens={tokens}
+              ethAddress={ethAddress}
+            />
+            <PerlToken
+              ethAddress={ethAddress}
+            />
             <button
               onClick={() => moralisLogout(setAuth)}
             >Logout
